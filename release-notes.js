@@ -1,5 +1,8 @@
 // Published releases. Fold preview iterations into the next published entry.
 export const RELEASE_NOTES = Object.freeze([
+    { version: '4.5.2', date: '2026.11.21', changes: [
+        ['调整', '内置主题配色', '写梦和保存弹窗改用浅薄荷绿，选中的页签用淡柠檬绿标记。'],
+    ] },
     { version: '4.5.1', date: '2026.11.21', changes: [
         ['调整', '手机界面', '内置主题统一为灰粉底色与莓色按钮。页面标题、分组和选中的页签有清晰分隔。'],
         ['修复', '保存作品与长梦候选', '两个弹窗按内容决定高度。小屏幕可滚动表单，底部保留保存与取消。'],

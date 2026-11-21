@@ -1,6 +1,6 @@
-/* 小兔造梦 v4.5.1
+/* 小兔造梦 v4.5.2
  * Three skins via [data-skin] on .theater-popup:
- *   "default" (or absent) — built-in pastel/serif look
+ *   "default" (or absent) — built-in mint and lemon palette
  *   "theater"             — follow SillyTavern theme variables
  *   "custom"               — minimal scaffolding, fully overridable via custom CSS
  */
@@ -54,29 +54,31 @@
  * ============================================================ */
 .theater-popup,
 body :is(dialog.popup, .popup):has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) {
-    --t-fg: #362d33;
-    --t-fg-soft: #63565e;
-    --t-fg-mute: #71636b;
-    --t-fg-faint: #75656e;
-    --t-bg: #f7f3f4;
-    --t-surface-1: #fffdfe;
-    --t-surface-2: #f5edef;
-    --t-surface-3: #eadce2;
+    --t-fg: #233c33;
+    --t-fg-soft: #435f52;
+    --t-fg-mute: #51695e;
+    --t-fg-faint: #596f63;
+    --t-bg: #f4fbf7;
+    --t-surface-1: #fdfffd;
+    --t-surface-2: #edf8f2;
+    --t-surface-3: #deefe5;
     --t-card-warm: var(--t-surface-1);
-    --t-card-pink: #f3e3ea;
+    --t-card-pink: #eff8ce;
     --t-card-blue: var(--t-surface-2);
     --t-card-green: var(--t-surface-2);
-    --t-border: #dacbd2;
-    --t-border-strong: #b9a1ad;
-    --t-accent: #884561;
-    --t-accent-soft: #d9b7c7;
-    --t-accent-deep: #68334b;
+    --t-border: #cddfd3;
+    --t-border-strong: #98b4a2;
+    --t-accent: #367259;
+    --t-accent-soft: #aedcc6;
+    --t-action-fill: #bcebd4;
+    --t-action-hover: #a6dfc4;
+    --t-accent-deep: #22533f;
     --t-on-accent: #fff;
     --t-danger: #a43b47;
     --t-danger-soft: #f8e8eb;
-    --t-elev-1: 0 1px 3px #39203209;
-    --t-elev-2: 0 4px 16px #39203214;
-    --t-elev-3: 0 12px 40px #39203226;
+    --t-elev-1: 0 1px 3px #214d3709;
+    --t-elev-2: 0 4px 16px #214d3714;
+    --t-elev-3: 0 12px 40px #214d3726;
 }
 .theater-popup {
     /* Spacing — 4pt grid */
@@ -5067,8 +5069,8 @@ body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="
     color: var(--t-fg) !important;
     border: 1px solid var(--t-border) !important;
     border-radius: 24px !important;
-    box-shadow: 0 16px 48px rgba(107, 68, 35, .14),
-                0 4px 12px rgba(107, 68, 35, .06) !important;
+    box-shadow: 0 16px 48px rgba(33, 77, 55, .14),
+                0 4px 12px rgba(33, 77, 55, .06) !important;
     overflow: hidden;
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-body,
@@ -5091,15 +5093,15 @@ body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-ok,
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-cancel,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-cancel {
-    background: var(--t-accent) !important;
-    color: var(--t-on-accent) !important;
+    background: var(--t-action-fill) !important;
+    color: var(--t-accent-deep) !important;
     min-height: 38px !important;
-    border: 1px solid transparent !important;
+    border: 1px solid var(--t-border-strong) !important;
     border-radius: var(--t-radius-md, 12px) !important;
     padding: 7px 18px !important;
     font-weight: 600 !important;
     letter-spacing: .4px !important;
-    box-shadow: 0 1px 3px rgba(107, 68, 35, .12) !important;
+    box-shadow: 0 1px 3px rgba(33, 77, 55, .12) !important;
     transition: transform 120ms cubic-bezier(.2, .8, .2, 1),
                 box-shadow 120ms cubic-bezier(.2, .8, .2, 1),
                 background 120ms cubic-bezier(.2, .8, .2, 1) !important;
@@ -5120,19 +5122,19 @@ body dialog.popup:has(.theater-popup) .popup-button-close {
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-ok:hover,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-ok:hover {
-    background: var(--t-accent-deep) !important;
-    box-shadow: 0 6px 18px rgba(107, 68, 35, .25),
+    background: var(--t-action-hover) !important;
+    box-shadow: 0 6px 18px rgba(33, 77, 55, .25),
                 inset 0 1px 0 rgba(255, 255, 255, .25) !important;
     transform: translateY(-1px);
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) :is(.popup-button-close, .popup-button-cancel):hover,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) :is(.popup-button-close, .popup-button-cancel):hover {
     background: var(--t-surface-2) !important;
-    box-shadow: 0 2px 6px rgba(107, 68, 35, .12) !important;
+    box-shadow: 0 2px 6px rgba(33, 77, 55, .12) !important;
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"]))::backdrop,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"]))::backdrop {
-    background: rgb(46 32 42 / 44%) !important;
+    background: rgb(27 54 41 / 35%) !important;
     backdrop-filter: blur(2px);
 }
 
@@ -8033,18 +8035,18 @@ body :is(.popup,dialog.popup):has(.theater-tag-manager-popup) :is(.popup-control
 }
 .rabbit-app[data-skin="default"] .theater-result-subnav button::before { content: none; }
 .rabbit-app[data-skin="default"] .theater-result-subnav button[aria-selected="true"] {
-    background: var(--t-surface-1);
+    background: var(--t-card-pink);
     border-radius: 7px;
     box-shadow: inset 0 -2px var(--t-accent);
 }
 .theater-popup[data-skin="default"] :is(.theater-btn.primary, .ui-btn-primary, #theater-generate-btn) {
-    background: var(--t-accent);
-    border-color: var(--t-accent);
-    color: var(--t-on-accent);
+    background: var(--t-action-fill);
+    border-color: var(--t-border-strong);
+    color: var(--t-accent-deep);
     box-shadow: none;
 }
 .theater-popup[data-skin="default"] :is(.theater-btn.primary, .ui-btn-primary, #theater-generate-btn):hover {
-    background: var(--t-accent-deep);
+    background: var(--t-action-hover);
 }
 .theater-popup[data-skin="default"] :is(.theater-btn, .rabbit-home, .theater-label, .theater-drawer-toggle, .theater-quick-render-toggle) i {
     color: inherit !important;

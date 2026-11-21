@@ -291,7 +291,7 @@ function createFloatingBall() {
             return !!document.querySelector('.edge-panel-root .action-icon--active, .edge-panel-root [title*="捕获"].action-icon--active');
         }
 
-        // 暖底 + 焦糖色油灯 + 软阴影
+        // 悬浮入口沿用柠檬绿和薄荷绿。
         ball.setAttribute('style', [
             'position:fixed !important',
             `left:${initLeft}px`,
@@ -299,15 +299,15 @@ function createFloatingBall() {
             'width:48px !important',
             'height:48px !important',
             'border-radius:50% !important',
-            'background:linear-gradient(140deg, #FFF6E4 0%, #F5E0BC 100%) !important',
-            'color:#8C5A2F !important',
-            'border:1px solid rgba(140, 90, 47, 0.18) !important',
+            'background:linear-gradient(140deg, #EFF8CE 0%, #BCEBD4 100%) !important',
+            'color:#22533F !important',
+            'border:1px solid rgba(33, 77, 55, 0.18) !important',
             'display:flex !important',
             'align-items:center !important',
             'justify-content:center !important',
             'font-size:1.2em !important',
             'cursor:pointer !important',
-            'box-shadow:0 6px 18px rgba(140, 90, 47, 0.22), inset 0 1px 0 rgba(255,255,255,0.6) !important',
+            'box-shadow:0 6px 18px rgba(33, 77, 55, 0.22), inset 0 1px 0 rgba(255,255,255,0.6) !important',
             'z-index:2147483647 !important',
             'opacity:0.92',
             'transition:transform 0.18s cubic-bezier(.2,.8,.2,1), opacity 0.18s, box-shadow 0.18s',
@@ -467,12 +467,12 @@ function createFloatingBall() {
             cancelTuck();
             ball.style.opacity = '1';
             ball.style.transform = 'scale(1.1) rotate(-8deg)';
-            ball.style.boxShadow = '0 10px 24px rgba(140, 90, 47, 0.32), inset 0 1px 0 rgba(255,255,255,0.7)';
+            ball.style.boxShadow = '0 10px 24px rgba(33, 77, 55, 0.32), inset 0 1px 0 rgba(255,255,255,0.7)';
         });
         ball.addEventListener('mouseleave', () => {
             ball.style.opacity = '0.92';
             ball.style.transform = 'scale(1) rotate(0)';
-            ball.style.boxShadow = '0 6px 18px rgba(140, 90, 47, 0.22), inset 0 1px 0 rgba(255,255,255,0.6)';
+            ball.style.boxShadow = '0 6px 18px rgba(33, 77, 55, 0.22), inset 0 1px 0 rgba(255,255,255,0.6)';
             scheduleTuck();
         });
 
