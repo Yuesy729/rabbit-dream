@@ -1,0 +1,80 @@
+// Published releases. Fold preview iterations into the next published entry.
+export const RELEASE_NOTES = Object.freeze([
+    { version: '4.5.0', date: '2026.11.21', changes: [
+        ['调整', '小兔造梦', '写梦、长梦、书架与设置采用浅色马卡龙导航。正文的续写、重写和保存入口附带简短说明。'],
+        ['新增', '在书名旁切换长梦', '选择正在写的卷或新建长梦，切换前保留当前续写指令。'],
+    ] },
+    { version: '4.4.8', date: '2026.11.09', changes: [
+        ['新增', '完整备份与恢复', '支持下载到本地或备份到 GitHub 私有仓库，按需启用定期备份；恢复前可预览和选择内容，追加恢复并跳过相同记录。'],
+        ['新增', '手动查找旧存档', '在设置的备份与恢复中手动查找当前浏览器、当前酒馆地址可访问的兼容旧存档，预览核对后确认恢复；保留原库，不保证找回已删除的数据。'],
+        ['新增', '可选读取柏宝书记忆', '在聊天前文中开启默认关闭的读取开关，将当前聊天的摘要和状态带入普通生成及续写；不写回柏宝书，不触发向量主动召回。'],
+        ['优化', '界面、备份提示与教程', '整理生成、长梦、历史、模板和设置界面；保存备份密钥后显示已保存，测试连接就近显示结果，并加入 GitHub 备份图文教程。'],
+        ['修复', '导入诊断与长梦切换', '导入备份时显示读取和核对进度、等待及失败提示；改善长梦切换时的闪白。'],
+    ] },
+    { version: '4.4.7', date: '2026.11.04', changes: [
+        ['新增', '独立 API 渠道与设置', '增加 Google Vertex 凭证接入及多渠道配置，API 预设可供正文、梦脉和独立排版使用；改善模型选择、前文排除说明与手机设置操作。'],
+        ['修复', '预设与接口适配、诊断提示', '改善预设后处理和部分接口的消息格式适配，不支持的消息结尾会明确提示；优化 Token 估算、错误说明和报错框显示。'],
+        ['保护', '互动 HTML 检查与单独重排', '识别缺脚本或明显截断的互动页面，保留已收到正文；一轮 HTML 未完成时可手动使用独立 HTML 排版 API 重试，流式开关恢复常显。'],
+    ] },
+    { version: '4.4.6', date: '2026.11.01', changes: [
+        ['新增', '完整提示词查看器', '在诊断页底部查看本次请求，支持搜索、复制和导出。'],
+        ['优化', '生成与诊断体验', '改善长梦续写、停止后的正文保留及主 API 设置跟随，运行日志可保留最近 500 条，并恢复原有显示高度。'],
+        ['修复', '历史记录显示', '改善部分旧历史记录的读取与显示。'],
+    ] },
+    { version: '4.4.5', date: '2026.10.30', label: '测试版', changes: [
+        ['调整', '正文目标不再被固定范围改小', '普通生成、普通续写与长梦可填写有效正整数字数，输入、候选切换和备份恢复保留目标，不再将长梦 15000 字改为 8000 字。单轮 API 额度和补写轮数仍生效，大目标可能增加等待和用量，实际字数仍由模型决定。'],
+        ['新增', '保留候选后退出，返回修改定梦', '长梦待确认区新增“保留候选并退出”，全部候选标记保留后可修改定梦，不采用当前候选、不自动生成，也不改正式章节。旧候选可返回查看；修正定梦后可按当前设定生成新版。'],
+        ['保护', '返回候选时保留刚修改的定梦', '处理退出、返回候选和保存定梦的重叠操作；状态变化或保存失败时不使用旧内容覆盖新设置。'],
+        ['调整', '单轮正文增加完整停笔要求', '普通单轮生成、单轮续写及长梦单轮章节要求充分展开篇幅并完成关键情节和必要人物反应，最后一句完整，允许开放结局；不增加调用，不影响多轮前半篇。提示要求不能保证消除截断。'],
+    ] },
+    { version: '4.4.4', date: '2026.10.28', label: '测试版', changes: [
+        ['测试', '按需更新，欢迎反馈', '本次为测试版本，建议此前反馈过相关问题的用户更新测试；目前使用正常的用户可以暂不更新。'],
+        ['调整', '长梦分轮与收束安排', '目标达到 5000 字、开启自动补写且允许至少两轮时，新章先写前半部分，再接续收束；已有同章草稿直接承接。可能增加等待和用量，仍不能保证字数达标或结尾绝不截断。'],
+        ['兼容', '主 API 慢回复多等一会儿', '主 API 兼容路径最长等待从 5 分钟延长至 15 分钟，停止按钮仍可随时结束插件等待，不增加自动重试。'],
+        ['修复', '辅助请求、正文识别与预设适配', '辅助请求跟随所选预设额度和流式开关；修正部分空响应被误当正文的情况，并改善普通生成与续写的预设变量、思考及附加输出处理。失败时保留已有内容。'],
+    ] },
+    { version: '4.4.3', date: '2026.10.20', changes: [
+        ['新增', '独立 HTML 排版 API', '在设置中的独立卡片开启并选择已保存的 API 预设，将原有的独立排版交给所选线路。默认关闭；正文生成和一次性正文加 HTML 的流程保持不变。'],
+        ['保护', '排版失败保留正文，可以单独重试', '普通结果可重试或停止 HTML 排版，无需重新生成正文；手改正文并成功保存后，旧排版任务会失效，避免覆盖修改。'],
+        ['新增', '设置里可以查看更新日志', '检查更新按钮下方新增更新日志，随插件内置，无需联网。最多保留最近 5 个正式版本，查看后清除未读提示，不自动弹窗。'],
+    ] },
+    { version: '4.4.2', date: '2026.10.19', changes: [
+        ['新增', '创作增强，可按需开启', '在「设置 → 生成控制」开启，为正文加入虚构叙事约定。默认关闭，不额外发起请求。'],
+        ['新增', '长梦概要可以直接修改', '在长梦概要区进入编辑，自行选择已有分章；只有整篇概要时，直接编辑整篇。打开即带入原文。'],
+        ['保护', '手改概要保留，保存前留旧版', '取消不写入。后续更新保留有效手稿；事实纠错后，手稿会保留并提示核对。'],
+    ] },
+    { version: '4.4.1', date: '2026.10.18', changes: [
+        ['新增', '普通续写文件夹可以带入长梦', '在长梦选择作品时选择已有文件夹，按原章节顺序带入，并保留正文与原 HTML。'],
+        ['优化', '大篇幅普通续写先完成正文，再排版', '新增目标达到 5000 字时，先完成正文，再统一套用所选 HTML 模板。原文承接和新增字数口径保持一致。'],
+        ['新增', '历史记录支持导入 HTML / HTM', '可将已有 HTML 文件导入历史，保留原有排版。'],
+        ['保护', '存档读取失败时保护已有内容', '各类存档分别读取；读取失败会明确提示，避免把失败误当作空记录并覆盖。'],
+    ] },
+    { version: '4.4.0', date: '', changes: [
+        ['优化', '普通续写更方便比较和接写', '可以查看本段不同版本、重写本段，再接着选定版本继续写。'],
+        ['优化', '长梦续章与候选保留', '新章先进入待确认区，可比较候选后再确认；未完成内容保留供后续继续。'],
+    ] },
+].slice(0, 5));
+
+export function releaseNotesHTML(esc) {
+    return RELEASE_NOTES.map((release, index) => {
+        const content = `<ul>${release.changes.map(([kind, title, text]) => `<li><span class="theater-change-kind">${esc(kind)}</span><div><b>${esc(title)}</b><p>${esc(text)}</p></div></li>`).join('')}</ul>`;
+        if (!index) return `<article class="theater-release"><header><h3>v${esc(release.version)} <span>${esc(release.label || '最新正式版')}</span></h3><time>${esc(release.date)}</time></header>${content}</article>`;
+        return `<details class="theater-release theater-release-previous"><summary><b>v${esc(release.version)}</b><small>${esc(release.date)}</small><i class="fa-solid fa-chevron-down"></i></summary>${content}</details>`;
+    }).join('');
+}
+
+export function latestReleaseVersion() { return RELEASE_NOTES[0]?.version || ''; }
+export function hasUnreadRelease(settings) { return settings?.releaseNotesReadVersion !== latestReleaseVersion(); }
+
+export function bindReleaseNotes($d, runtime) {
+    $d.off('click.treleasenotes').on('click.treleasenotes', '#theater-release-notes-toggle', function () {
+        const open = $(this).attr('aria-expanded') !== 'true';
+        $(this).attr('aria-expanded', String(open));
+        $('#theater-release-notes-content').prop('hidden', !open);
+        if (open) {
+            runtime.settings.releaseNotesReadVersion = latestReleaseVersion();
+            $('#theater-release-notes-dot').prop('hidden', true);
+            runtime.save();
+        }
+    });
+}
