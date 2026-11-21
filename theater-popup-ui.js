@@ -358,7 +358,7 @@ function buildPopupHTML(initialTab = runtime.settings.lastTheaterTab) {
                     <label class="theater-skin-row${skin === 'default' ? ' active' : ''}">
                         <input type="radio" name="theater-skin" value="default"${skin === 'default' ? ' checked' : ''}>
                         <span class="theater-skin-row-name">内置默认</span>
-                        <span class="theater-skin-row-desc">粉彩 · 衬线 · 大圆角</span>
+                        <span class="theater-skin-row-desc">雾粉底色 · 莓色按钮</span>
                     </label>
                     <label class="theater-skin-row${skin === 'theater' ? ' active' : ''}">
                         <input type="radio" name="theater-skin" value="theater"${skin === 'theater' ? ' checked' : ''}>

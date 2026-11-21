@@ -79,14 +79,16 @@ export async function saveDisplayedResultToDream(runtime, readingItem = null) {
     openImports.add(runtime);
     try {
         const { Popup, POPUP_TYPE } = SillyTavern.getContext();
-        const popup = new Popup(`<div class="theater-popup theater-compact-popup theater-dream-import-popup" style="gap:8px;text-align:left" data-skin="${runtime.esc(runtime.settings.skinMode || 'default')}">
-            <h3>存入长梦</h3>
+        const popup = new Popup(`<div class="theater-popup theater-compact-popup theater-dream-import-popup rabbit-save-sheet" data-skin="${runtime.esc(runtime.settings.skinMode || 'default')}">
+            <header class="theater-popup-header"><h3 class="theater-title">存入长梦</h3></header>
+            <div class="rabbit-import-fields">
             <label class="theater-label" for="theater-dream-import-target">选择作品</label>
             <select class="theater-input" id="theater-dream-import-target">${dreams.map(dream => `<option value="${runtime.esc(dream.id)}"${String(dream.id) === String(runtime.activeLongDreamId) ? ' selected' : ''}>${runtime.esc(dream.title)} · 第 ${dream.chapters.length + 1} 章</option>`).join('')}</select>
             <label class="theater-label" for="theater-dream-import-title">章节标题（可留空）</label>
             <input class="theater-input" id="theater-dream-import-title" maxlength="80" placeholder="留空使用章节编号">
-            <p class="theater-hint" style="text-align:left">只保存当前正在查看的结果，保留正文与排版。进入下一章待确认区后，点“用这版继续”正式收入长卷；不会自动生成正文。</p>
-            <p class="theater-hint" style="text-align:left">已有草稿与候选会作为保留版本留下。请核对当前结果仅包含新章节，避免把前章正文重复存入。</p>
+            <p class="theater-hint">本次只保存当前正文与排版。到下一章的待确认区点「用这版继续」，即可收入长卷。</p>
+            <p class="theater-hint">原有草稿和候选会保留。请确认当前正文只包含新章节。</p>
+            </div>
         </div>`, POPUP_TYPE.CONFIRM, '', { wide: false, okButton: '保存候选', cancelButton: '取消', allowVerticalScrolling: true });
         const shown = popup.show();
         const select = popup.dlg.querySelector('#theater-dream-import-target');

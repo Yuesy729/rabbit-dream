@@ -1,5 +1,9 @@
 // Published releases. Fold preview iterations into the next published entry.
 export const RELEASE_NOTES = Object.freeze([
+    { version: '4.5.1', date: '2026.11.21', changes: [
+        ['调整', '手机界面', '内置主题统一为灰粉底色与莓色按钮。页面标题、分组和选中的页签有清晰分隔。'],
+        ['修复', '保存作品与长梦候选', '两个弹窗按内容决定高度。小屏幕可滚动表单，底部保留保存与取消。'],
+    ] },
     { version: '4.5.0', date: '2026.11.21', changes: [
         ['调整', '小兔造梦', '写梦、长梦、书架与设置采用浅色马卡龙导航。正文的续写、重写和保存入口附带简短说明。'],
         ['新增', '在书名旁切换长梦', '选择正在写的卷或新建长梦，切换前保留当前续写指令。'],

@@ -1,4 +1,4 @@
-/* 小兔造梦 v4.5.0
+/* 小兔造梦 v4.5.1
  * Three skins via [data-skin] on .theater-popup:
  *   "default" (or absent) — built-in pastel/serif look
  *   "theater"             — follow SillyTavern theme variables
@@ -52,6 +52,32 @@
 /* ============================================================
  * Base scaffolding (shared by all skins — structure only)
  * ============================================================ */
+.theater-popup,
+body :is(dialog.popup, .popup):has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) {
+    --t-fg: #362d33;
+    --t-fg-soft: #63565e;
+    --t-fg-mute: #71636b;
+    --t-fg-faint: #75656e;
+    --t-bg: #f7f3f4;
+    --t-surface-1: #fffdfe;
+    --t-surface-2: #f5edef;
+    --t-surface-3: #eadce2;
+    --t-card-warm: var(--t-surface-1);
+    --t-card-pink: #f3e3ea;
+    --t-card-blue: var(--t-surface-2);
+    --t-card-green: var(--t-surface-2);
+    --t-border: #dacbd2;
+    --t-border-strong: #b9a1ad;
+    --t-accent: #884561;
+    --t-accent-soft: #d9b7c7;
+    --t-accent-deep: #68334b;
+    --t-on-accent: #fff;
+    --t-danger: #a43b47;
+    --t-danger-soft: #f8e8eb;
+    --t-elev-1: 0 1px 3px #39203209;
+    --t-elev-2: 0 4px 16px #39203214;
+    --t-elev-3: 0 12px 40px #39203226;
+}
 .theater-popup {
     /* Spacing — 4pt grid */
     --t-space-1: 4px;
@@ -83,46 +109,14 @@
     --t-dur-slow: 260ms;
     --t-ease: cubic-bezier(.2, .8, .2, 1);
 
-    /* ====== Default skin tokens (pastel + serif) ====== */
-    --t-fg: #2E2620;
-    --t-fg-soft: #6B5E50;
-    --t-fg-mute: #A29684;
-    --t-fg-faint: #C9BFB0;
-
-    --t-bg: #FFF8EE;
-    --t-surface-1: #FFFDF7;
-    --t-surface-2: #F8EFDC;
-    --t-surface-3: #F0E4CC;
-
-    --t-card-warm: #FFEBD0;     /* cream peach */
-    --t-card-pink: #FFE0DA;     /* macaron pink */
-    --t-card-blue: #DDEAF3;     /* macaron blue */
-    --t-card-green: #E2EDD8;    /* macaron mint */
-
-    --t-border: rgba(46, 38, 32, .10);
-    --t-border-strong: rgba(46, 38, 32, .22);
-
-    --t-accent: #B07A4A;        /* warm caramel */
-    --t-accent-soft: #D9A877;   /* light caramel */
-    --t-accent-deep: #6B4423;   /* deep cocoa */
-    --t-on-accent: #FFF8EE;
-    --t-danger: #C25555;
-    --t-danger-soft: rgba(194, 85, 85, .12);
-
-    --t-elev-1: 0 2px 8px rgba(107, 68, 35, .06);
-    --t-elev-2: 0 8px 24px rgba(107, 68, 35, .10), 0 1px 2px rgba(107, 68, 35, .04);
-    --t-elev-3: 0 16px 48px rgba(107, 68, 35, .14), 0 4px 12px rgba(107, 68, 35, .06);
-
-    --t-font-serif: 'Playfair Display', 'Noto Serif SC', 'Source Han Serif SC', Georgia, serif;
+    /* Component defaults. Built-in surfaces and host controls share a palette below. */
+    --t-font-serif: var(--t-font-sans);
     --t-font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
 
     min-height: 380px;
     padding: var(--t-space-2) 0 0;
     color: var(--t-fg);
-    background:
-        radial-gradient(ellipse 600px 320px at top right, rgba(217, 168, 119, .18), transparent 60%),
-        radial-gradient(ellipse 480px 280px at bottom left, rgba(176, 122, 74, .12), transparent 60%),
-        var(--t-bg);
+    background: var(--t-bg);
     font-family: var(--t-font-sans);
     font-size: var(--t-text-base);
     border-radius: var(--t-radius-xl);
@@ -5069,9 +5063,9 @@ body.theater-reader-open {
  * ============================================================ */
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])),
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) {
-    background: #FFFDF7 !important;
-    color: #2E2620 !important;
-    border: 1px solid rgba(176, 122, 74, .14) !important;
+    background: var(--t-surface-1) !important;
+    color: var(--t-fg) !important;
+    border: 1px solid var(--t-border) !important;
     border-radius: 24px !important;
     box-shadow: 0 16px 48px rgba(107, 68, 35, .14),
                 0 4px 12px rgba(107, 68, 35, .06) !important;
@@ -5086,7 +5080,7 @@ body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-buttons,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-buttons {
     background: transparent !important;
-    border-top: 1px solid rgba(176, 122, 74, .12) !important;
+    border-top: 1px solid var(--t-border) !important;
     padding-top: 14px !important;
     padding-bottom: 14px !important;
     margin-top: 8px !important;
@@ -5097,8 +5091,8 @@ body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-ok,
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-cancel,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-cancel {
-    background: linear-gradient(135deg, #B07A4A 0%, #6B4423 100%) !important;
-    color: #FFF8EE !important;
+    background: var(--t-accent) !important;
+    color: var(--t-on-accent) !important;
     min-height: 38px !important;
     border: 1px solid transparent !important;
     border-radius: var(--t-radius-md, 12px) !important;
@@ -5112,9 +5106,9 @@ body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) :is(.popup-button-close, .popup-button-cancel),
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) :is(.popup-button-close, .popup-button-cancel) {
-    background: #FFFDF7 !important;
-    color: #6B4423 !important;
-    border-color: rgba(107, 68, 35, .38) !important;
+    background: var(--t-surface-1) !important;
+    color: var(--t-accent-deep) !important;
+    border-color: var(--t-border-strong) !important;
 }
 body .popup:has(.theater-popup) .popup-button-close,
 body dialog.popup:has(.theater-popup) .popup-button-close {
@@ -5126,19 +5120,19 @@ body dialog.popup:has(.theater-popup) .popup-button-close {
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-ok:hover,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) .popup-button-ok:hover {
-    background: linear-gradient(135deg, #D9A877 0%, #B07A4A 100%) !important;
+    background: var(--t-accent-deep) !important;
     box-shadow: 0 6px 18px rgba(107, 68, 35, .25),
                 inset 0 1px 0 rgba(255, 255, 255, .25) !important;
     transform: translateY(-1px);
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) :is(.popup-button-close, .popup-button-cancel):hover,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) :is(.popup-button-close, .popup-button-cancel):hover {
-    background: #F8EFDC !important;
+    background: var(--t-surface-2) !important;
     box-shadow: 0 2px 6px rgba(107, 68, 35, .12) !important;
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"]))::backdrop,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"]))::backdrop {
-    background: rgba(46, 38, 32, .42) !important;
+    background: rgb(46 32 42 / 44%) !important;
     backdrop-filter: blur(2px);
 }
 
@@ -5153,7 +5147,7 @@ body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="
 .theater-popup:not([data-skin="theater"]):not([data-skin="custom"]),
 .theater-popup:not([data-skin="theater"]):not([data-skin="custom"]) * {
     scrollbar-width: thin;
-    scrollbar-color: #B07A4A rgba(176, 122, 74, .08);
+    scrollbar-color: var(--t-border-strong) var(--t-surface-2);
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar,
@@ -5164,20 +5158,20 @@ body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar-track,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar-track,
 .theater-popup:not([data-skin="theater"]):not([data-skin="custom"]) ::-webkit-scrollbar-track {
-    background: rgba(176, 122, 74, .08) !important;
+    background: var(--t-surface-2) !important;
     border-radius: 4px;
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar-thumb,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar-thumb,
 .theater-popup:not([data-skin="theater"]):not([data-skin="custom"]) ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #D9A877 0%, #B07A4A 100%) !important;
+    background: var(--t-border-strong) !important;
     border-radius: 4px;
     border: 1px solid rgba(255, 253, 247, .4);
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar-thumb:hover,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar-thumb:hover,
 .theater-popup:not([data-skin="theater"]):not([data-skin="custom"]) ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #B07A4A 0%, #6B4423 100%) !important;
+    background: var(--t-accent) !important;
 }
 body .popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar-corner,
 body dialog.popup:has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) ::-webkit-scrollbar-corner,
@@ -7949,13 +7943,6 @@ body :is(.popup,dialog.popup):has(.theater-tag-manager-popup) :is(.popup-control
 .theater-backup-dialog .archive-scope,.theater-backup-dialog .archive-state,.theater-backup-dialog .archive-candidate{text-align:left}
 
 /* 小兔造梦 · mobile writing workspace */
-.rabbit-app[data-skin="default"] {
-    --t-bg:#fcfaf7; --t-fg:#403a40; --t-fg-soft:#695e65; --t-fg-mute:#766d71;
-    --t-surface-1:#fff; --t-surface-2:#f6f1ed; --t-surface-3:#f0e8e3;
-    --t-card-warm:#fff; --t-card-pink:#f7e5e8; --t-card-blue:#f2eaf4; --t-card-green:#ebf1e6;
-    --t-border:#e6e1dc; --t-border-strong:#d9cdd0; --t-accent:#a5657b; --t-accent-soft:#edd2d8; --t-accent-deep:#74485c;
-    --t-font-serif:var(--t-font-sans); background:var(--t-bg); text-shadow:none;
-}
 .theater-popup.rabbit-app {display:flex;flex-direction:column;text-align:start}
 .rabbit-app .rabbit-brand {display:flex;align-items:center;gap:10px;margin:0 16px;padding:12px 0;border-bottom:1px solid var(--t-border);font:600 18px/1.4 var(--t-font-sans)}
 .rabbit-brand>span {color:var(--t-accent-deep);background:var(--t-card-pink);border-radius:10px;display:grid;place-items:center;width:34px;height:34px}
@@ -7963,9 +7950,7 @@ body :is(.popup,dialog.popup):has(.theater-tag-manager-popup) :is(.popup-control
 .rabbit-app .rabbit-nav {order:3;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:0;padding:6px 12px;border-top:1px solid var(--t-border);background:var(--t-surface-1)}
 .rabbit-app .rabbit-nav .rabbit-home {display:grid;place-content:center;justify-items:center;gap:3px;min-width:0;min-height:46px;padding:4px;border:0;border-radius:10px;color:var(--t-fg-soft);background:transparent;box-shadow:none;font:500 12px/1.4 var(--t-font-sans)}
 .rabbit-app .rabbit-home i {font-size:17px}
-.rabbit-app .rabbit-home[aria-current=page] {background:var(--t-card-pink);color:var(--t-accent-deep);font-weight:700}
-.rabbit-app .rabbit-home[data-tab="long-dream"][aria-current=page] {background:var(--t-card-green)}
-.rabbit-app .rabbit-home[data-tab="config"][aria-current=page] {background:var(--t-card-blue)}
+.rabbit-app .rabbit-nav .rabbit-home[aria-current=page] {background:var(--t-card-pink);color:var(--t-accent-deep);font-weight:700}
 .rabbit-app .rabbit-heading {font:700 clamp(21px,5vw,29px)/1.3 var(--t-font-sans);margin:20px 0 16px;text-align:start}
 .rabbit-app .rabbit-back {border:0;color:var(--t-accent-deep);background:transparent;text-align:start;padding:8px 0;min-height:44px}
 .rabbit-app .rabbit-tools {margin:20px 0 12px}
@@ -7982,7 +7967,6 @@ body :is(.popup,dialog.popup):has(.theater-tag-manager-popup) :is(.popup-control
 .rabbit-app .rabbit-write-bar>* {box-sizing:border-box;min-width:0;width:100%;height:46px;margin:0;max-width:none;border-radius:10px}
 .rabbit-app .rabbit-format-label {display:block;font-size:13px;color:var(--t-fg-soft);margin:12px 0 5px}
 .rabbit-app .rabbit-write-bar select {text-overflow:ellipsis;padding:0 8px}
-.rabbit-app[data-skin=default] #theater-generate-btn {background:#f3d9dd;color:#633e4c;border:1px solid #ecd1d5;box-shadow:none}
 .rabbit-app .rabbit-options {margin-top:12px;border-top:1px solid var(--t-border)}
 .rabbit-app .rabbit-options>summary,.rabbit-app .rabbit-chapters>summary,.rabbit-app .rabbit-dream-picker>summary {cursor:pointer;min-height:44px;padding:12px 0;color:var(--t-fg-soft);font:550 13px/1.5 var(--t-font-sans)}
 .rabbit-app .rabbit-options .theater-btn-row {gap:8px;flex-wrap:wrap}
@@ -8007,3 +7991,172 @@ body :is(.popup,dialog.popup):has(.theater-tag-manager-popup) :is(.popup-control
 
 .rabbit-app .theater-panel[data-panel="long-dream"] .compact-detail-head-main h2 {white-space:normal;overflow-wrap:anywhere}
 .rabbit-app .rabbit-row[hidden] {display:none!important}
+
+/* Built-in workspace. The shell, page titles and form titles mark three distinct levels. */
+.theater-popup[data-skin="default"] {
+    color-scheme: light;
+    text-shadow: none;
+}
+.rabbit-app[data-skin="default"] .rabbit-brand {
+    flex: none;
+    margin: 0;
+    padding: 8px 16px 12px;
+    background: var(--t-surface-1);
+    border-bottom: 1px solid var(--t-border-strong);
+}
+.rabbit-app .theater-panel > .rabbit-heading,
+.rabbit-app .rabbit-write-heading {
+    margin: 0 0 14px;
+    padding: 14px 2px 12px;
+    border-bottom: 2px solid var(--t-border-strong);
+}
+.rabbit-app .rabbit-back + .rabbit-heading { padding-top: 2px; }
+.rabbit-app .rabbit-write-heading .rabbit-heading { margin: 0; }
+.rabbit-app .rabbit-write-heading button { min-height: 40px; }
+.rabbit-app .theater-section > .theater-label:first-child,
+.rabbit-app .theater-instruction-heading-row,
+.rabbit-app .rabbit-tools h3 {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--t-border);
+}
+.rabbit-app .theater-instruction-heading-row {
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.rabbit-app #theater-instruction-label { order: -1; font-weight: 650; }
+.rabbit-app[data-skin="default"] .theater-result-subnav {
+    padding: 3px;
+    gap: 4px;
+    background: var(--t-surface-2);
+    border: 1px solid var(--t-border);
+    border-radius: 10px;
+}
+.rabbit-app[data-skin="default"] .theater-result-subnav button::before { content: none; }
+.rabbit-app[data-skin="default"] .theater-result-subnav button[aria-selected="true"] {
+    background: var(--t-surface-1);
+    border-radius: 7px;
+    box-shadow: inset 0 -2px var(--t-accent);
+}
+.theater-popup[data-skin="default"] :is(.theater-btn.primary, .ui-btn-primary, #theater-generate-btn) {
+    background: var(--t-accent);
+    border-color: var(--t-accent);
+    color: var(--t-on-accent);
+    box-shadow: none;
+}
+.theater-popup[data-skin="default"] :is(.theater-btn.primary, .ui-btn-primary, #theater-generate-btn):hover {
+    background: var(--t-accent-deep);
+}
+.theater-popup[data-skin="default"] :is(.theater-btn, .rabbit-home, .theater-label, .theater-drawer-toggle, .theater-quick-render-toggle) i {
+    color: inherit !important;
+}
+.theater-popup[data-skin="default"] :is(.theater-input, .theater-select, .theater-textarea):not(:focus) {
+    border: 1px solid var(--t-border-strong);
+    background-color: var(--t-surface-1);
+    color: var(--t-fg);
+}
+.theater-popup[data-skin="default"] :is(.theater-input, .theater-textarea)::placeholder {
+    color: var(--t-fg-faint);
+    opacity: 1;
+}
+.rabbit-app[data-skin="default"] .rabbit-nav .rabbit-home[aria-current="page"] {
+    box-shadow: inset 0 -2px var(--t-accent);
+}
+.theater-popup[data-skin="default"] :is(button, summary, [tabindex="0"]):focus-visible {
+    outline: 2px solid var(--t-accent);
+    outline-offset: -2px;
+}
+
+/* SillyTavern owns the footer. Let the form scroll independently in a short viewport. */
+body :is(dialog.popup, .popup):has(.theater-popup.rabbit-save-sheet) {
+    display: flex;
+    flex-direction: column;
+    height: auto !important;
+    max-height: calc(100dvh - 24px) !important;
+}
+body :is(dialog.popup, .popup):has(.theater-popup.rabbit-save-sheet) :is(.popup-body, .popup-content) {
+    height: auto !important;
+    flex: 0 1 auto !important;
+    min-height: 0 !important;
+}
+body :is(dialog.popup, .popup):has(.theater-popup.rabbit-save-sheet) .popup-content {
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+}
+.theater-popup.theater-compact-popup.rabbit-save-sheet {
+    flex: 0 0 auto;
+    min-height: 0;
+    text-align: start;
+}
+.rabbit-save-sheet[data-skin="default"] { background: var(--t-surface-1); }
+.rabbit-save-sheet .theater-popup-header {
+    padding: 15px 18px 13px;
+    border-bottom: 1px solid var(--t-border-strong);
+    background: var(--t-surface-2);
+}
+.rabbit-save-sheet .theater-popup-header .theater-title {
+    margin: 0;
+    font-size: max(18px, var(--t-text-lg));
+    line-height: 1.4;
+}
+.rabbit-save-sheet .theater-compact-tag-body,
+.rabbit-save-sheet .rabbit-import-fields {
+    padding: 16px 18px;
+    text-align: start;
+}
+.rabbit-save-sheet .rabbit-import-fields { display: grid; gap: 8px; }
+.rabbit-import-fields .theater-label { margin: 0; }
+.rabbit-import-fields .theater-input + .theater-label { margin-top: 8px; }
+.rabbit-save-sheet .theater-input { min-height: 42px; }
+.rabbit-save-sheet .theater-tag-choice-list.is-compact {
+    flex: none;
+    min-height: 0;
+    max-height: 28dvh;
+}
+.rabbit-save-sheet .theater-tag-choice-empty {
+    margin: 0;
+    padding: 8px 0;
+    font-style: normal;
+}
+.rabbit-save-sheet :is(.theater-hint, small, .theater-tag-choice-empty) {
+    color: var(--t-fg-soft);
+    opacity: 1;
+    line-height: 1.6;
+    font-size: max(12px, var(--t-text-sm));
+}
+.rabbit-import-fields .theater-hint { margin: 0; }
+.rabbit-import-fields .theater-hint:first-of-type {
+    padding-top: 12px;
+    margin-top: 4px;
+    border-top: 1px solid var(--t-border);
+}
+body :is(dialog.popup, .popup):has(.theater-popup.rabbit-save-sheet[data-skin]) .popup-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 12px 18px !important;
+}
+body :is(dialog.popup, .popup):has(.theater-popup.rabbit-save-sheet[data-skin]) :is(.popup-button-ok, .popup-button-cancel) {
+    width: 100% !important;
+    min-height: 44px !important;
+    margin: 0;
+}
+@media (max-width: 540px) {
+    .rabbit-app #theater-instruction {
+        height: clamp(132px, 23dvh, 190px);
+        min-height: 120px !important;
+    }
+}
+
+/* Closing the main workspace is secondary to its four navigation buttons. */
+body :is(dialog.popup, .popup):has(.theater-popup.rabbit-app[data-skin="default"]) .popup-controls .popup-button-ok {
+    background: var(--t-surface-1) !important;
+    border-color: var(--t-border-strong) !important;
+    color: var(--t-fg-soft) !important;
+    box-shadow: none !important;
+}
+.rabbit-app[data-skin="default"] .theater-result-toolbox.is-bookmark .theater-result-actions-toggle {
+    background: var(--t-surface-1);
+    color: var(--t-accent-deep);
+    box-shadow: var(--t-elev-2);
+}
+.rabbit-app[data-skin="default"] .theater-result-bookmark-lamp .theater-lamp-icon { fill: currentColor; }

@@ -433,7 +433,7 @@ async function chooseTagsWithNew({ title = '选择标签', subtitle = '勾选已
     const current = normalizeTagFilter(selected, known);
     const rows = known.map(tag => `<label class="theater-tag-choice"><input type="checkbox" value="${runtime.esc(tag)}" ${current.includes(tag) ? 'checked' : ''}><span><i class="fa-solid fa-tag"></i><b>${runtime.esc(tag)}</b></span></label>`).join('');
     const emptyHint = known.length ? '' : '<p class="theater-empty theater-tag-choice-empty">还没有标签，可以在下方直接添加。</p>';
-    const html = `<div class="theater-popup theater-compact-popup" data-skin="${runtime.settings.skinMode || 'default'}">
+    const html = `<div class="theater-popup theater-compact-popup rabbit-save-sheet" data-skin="${runtime.settings.skinMode || 'default'}">
         <div class="theater-popup-header"><p class="theater-title">${runtime.esc(title)}</p></div>
         <div class="theater-section theater-compact-tag-body">
             ${templateName === null ? '' : `<div class="theater-tag-template-name-field">
