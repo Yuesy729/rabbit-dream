@@ -1,4 +1,4 @@
-/* 小兔造梦 v4.5.2
+/* 小兔造梦 v4.5.3
  * Three skins via [data-skin] on .theater-popup:
  *   "default" (or absent) — built-in mint and lemon palette
  *   "theater"             — follow SillyTavern theme variables
@@ -54,31 +54,31 @@
  * ============================================================ */
 .theater-popup,
 body :is(dialog.popup, .popup):has(.theater-popup:not([data-skin="theater"]):not([data-skin="custom"])) {
-    --t-fg: #233c33;
-    --t-fg-soft: #435f52;
-    --t-fg-mute: #51695e;
-    --t-fg-faint: #596f63;
-    --t-bg: #f4fbf7;
-    --t-surface-1: #fdfffd;
-    --t-surface-2: #edf8f2;
-    --t-surface-3: #deefe5;
+    --t-fg: #343f39;
+    --t-fg-soft: #505e55;
+    --t-fg-mute: #59675e;
+    --t-fg-faint: #606d62;
+    --t-bg: #f6f8f5;
+    --t-surface-1: #fdfefb;
+    --t-surface-2: #eff3ee;
+    --t-surface-3: #e5ebe4;
     --t-card-warm: var(--t-surface-1);
-    --t-card-pink: #eff8ce;
+    --t-card-pink: #eeefdc;
     --t-card-blue: var(--t-surface-2);
     --t-card-green: var(--t-surface-2);
-    --t-border: #cddfd3;
-    --t-border-strong: #98b4a2;
-    --t-accent: #367259;
-    --t-accent-soft: #aedcc6;
-    --t-action-fill: #bcebd4;
-    --t-action-hover: #a6dfc4;
-    --t-accent-deep: #22533f;
+    --t-border: #d5ddd2;
+    --t-border-strong: #a2b1a3;
+    --t-accent: #516c5b;
+    --t-accent-soft: #c6d5c8;
+    --t-action-fill: #dbe6dc;
+    --t-action-hover: #cddcd0;
+    --t-accent-deep: #3c5345;
     --t-on-accent: #fff;
     --t-danger: #a43b47;
     --t-danger-soft: #f8e8eb;
-    --t-elev-1: 0 1px 3px #214d3709;
-    --t-elev-2: 0 4px 16px #214d3714;
-    --t-elev-3: 0 12px 40px #214d3726;
+    --t-elev-1: 0 1px 3px #394b3e09;
+    --t-elev-2: 0 4px 16px #394b3e14;
+    --t-elev-3: 0 12px 40px #394b3e26;
 }
 .theater-popup {
     /* Spacing — 4pt grid */

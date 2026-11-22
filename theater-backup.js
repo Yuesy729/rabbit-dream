@@ -1,12 +1,9 @@
-import { BACKUP_FORMAT, BACKUP_MANIFEST, MAX_BACKUP_BYTES, createCompleteBackup, parseCompleteBackup, normalizeBackupData, backupCounts, backupProtection, digest, stableJson } from './backup-data.js';
+import { decodeBackupFile } from './legacy-backup.js';
+import { BACKUP_MANIFEST, MAX_BACKUP_BYTES, createCompleteBackup, backupProtection } from './backup-data.js';
 import { createGithubBackupClient, validateBackupRepository } from './backup-github.js';
 import { createBackupStorage } from './backup-storage.js';
 import { backupSettingsHTML, backupDiagnosticHTML, backupStatusText, BACKUP_LABELS, escapeBackup as e, restoreDialog, isBackupReduction } from './backup-ui.js';
 import { newHistoryKey } from './history-collections.js';
-import { parseInstructionBackup } from './instruction-backup.js';
-import { normalizeHistoryBackup, HISTORY_ARCHIVE_MANIFEST, historyItemsFromArchive } from './history-backup.js';
-import { parseLongDreamBackup } from './long-dream-backup.js';
-import { LONG_DREAM_ARCHIVE_MANIFEST, parseLongDreamArchive } from './long-dream-archive.js';
 import { sanitizeLogText } from './runtime-log.js';
 import { backupFileMetadata, createBackupImportTrace } from './backup-import-diagnostics.js';
 import { discoverOldArchives } from './archive-discovery.js';
@@ -127,53 +124,15 @@ export function createTheaterBackup(runtime) {
             runtime.runtimeLog('warn','自动备份已暂停',{reason:state.protection});
         }
     }
-    async function decodeFile(file,scope,progress=()=>{}) {
-        if (file.size>MAX_BACKUP_BYTES) throw new Error('备份文件超过 128 MB，请分项导入');
-        let data;
-        try {
-            if (/\.zip$/i.test(file.name)) {
-                progress('zipLibrary');
-                const JSZip=await runtime.loadJSZip();
-                progress('zipRead');
-                const zip=await JSZip.loadAsync(file);
-                const entries=Object.values(zip.files).filter(x=>!x.dir);
-                if (entries.length>5000 || entries.reduce((n,x)=>n+Number(x._data?.uncompressedSize || 0),0)>MAX_BACKUP_BYTES) throw new Error('备份解压内容超过安全上限');
-                const findManifest=name=>entries.find(x=>x.name.replace(/\\/g,'/').split('/').pop().toLowerCase()===name.toLowerCase());
-                progress('manifest');
-                const completeManifest=findManifest(BACKUP_MANIFEST),dreamManifest=findManifest(LONG_DREAM_ARCHIVE_MANIFEST),historyManifest=findManifest(HISTORY_ARCHIVE_MANIFEST);
-                if (completeManifest) data=JSON.parse(await completeManifest.async('string'));
-                else if (dreamManifest) {
-                    const manifest=JSON.parse(await dreamManifest.async('string'));
-                    const files=await Promise.all(entries.filter(x=>x.name!==LONG_DREAM_ARCHIVE_MANIFEST).map(async x=>({name:x.name,content:await x.async('string')})));
-                    data={dreams:parseLongDreamArchive(manifest,files)};
-                } else {
-                    const manifest=historyManifest?JSON.parse(await historyManifest.async('string')):null;
-                    const html=await Promise.all(entries.filter(x=>/\.html?$/i.test(x.name)).map(async x=>({name:x.name,html:await x.async('string')})));
-                    data={history:historyItemsFromArchive(manifest,html),folders:manifest?.folders || []};
-                }
-            } else if (/\.html?$/i.test(file.name) && scope==='history') data={history:[{title:file.name.replace(/\.html?$/i,''),html:await file.text(),mode:'html'}]};
-            else data=JSON.parse(await file.text());
-        } catch { throw new Error('无法读取备份，请检查格式、文件是否完整或大小是否超限'); }
-        progress('validate');
-        if (data?.format===BACKUP_FORMAT) return parseCompleteBackup(data);
-        progress('normalize');
-        let content;
-        if (data?.format==='st-theater-instructions') { const parsed=parseInstructionBackup(data); if(parsed)content={instructions:parsed.templates,instructionTags:parsed.tags}; }
-        else if (data?.format==='st-theater-long-dream') content={dreams:parseLongDreamBackup(data)};
-        else if (Array.isArray(data?.dreams)) content={dreams:data.dreams};
-        else content={history:normalizeHistoryBackup(data),folders:data?.folders || []};
-        const normalized=normalizeBackupData(content || {});
-        if (!normalized.instructions.length&&!normalized.history.length&&!normalized.dreams.length) throw new Error('没有可恢复的有效内容；其他指令格式请使用“导入其他指令文件”');
-        return createCompleteBackup(normalized,{sourceId:(await digest(normalized)).slice(0,32),deviceName:'旧格式备份'});
-    }
     async function openRestore(scope='all', initialSource='local') {
         const archives=initialSource==='archives';
+        const legacy=initialSource==='legacy';
         const openingTrace=createBackupImportTrace(runtime,{scope,source:initialSource});
         openingTrace.step('opening');
         try { await initialize(); idle(); if (!root()) throw new Error('小剧场窗口未找到，请重新打开'); } catch(error) { openingTrace.fail(); throw error; }
         root().querySelector('.theater-backup-dialog')?.close();
         let view;
-        try { view=restoreDialog(root(),scope,archives?{title:'查找旧存档'}:{}); openingTrace.finish(); } catch(error) { openingTrace.fail(); throw error; }
+        try { view=restoreDialog(root(),scope,archives?{title:'查找旧存档'}:legacy?{title:'从千夜浮梦导入备份'}:{}); openingTrace.finish(); } catch(error) { openingTrace.fail(); throw error; }
         if(archives)view.element.classList.add('archive-dialog');
         const allowed=archives?['history','dreams']:scope==='all'?Object.keys(BACKUP_LABELS):[scope];
         let packet=null, preview=null, entries=[], selected=[...allowed], ticket=0, committing=false, readingTrace=null, currentSource=initialSource;
@@ -200,6 +159,13 @@ export function createTheaterBackup(runtime) {
                     archiveResult=result;view.body.innerHTML=archiveSearchHTML(result);
                     runtime.runtimeLog('info','旧存档查找完成',{checked:result.checked,candidates:result.candidates.length,failed:result.failed,partial:result.status!=='complete'});
                 }catch(error){if(view.alive()&&current===ticket&&error.name!=='AbortError'){archiveResult={candidates:[],status:'failed'};view.body.innerHTML=archiveSearchHTML(archiveResult);}}
+                return;
+            }
+            if (legacy) {
+                view.body.innerHTML = `<p class="theater-dialog-note">在千夜浮梦的「设置 → 备份与恢复」下载完整备份。已有单独导出的书架、长梦或指令，也可以逐份导入。</p>
+                    <label class="theater-backup-file"><b>选择旧备份</b><input type="file" data-backup-file accept=".zip,.json,.html,.htm"></label>
+                    <p class="theater-dialog-note">先核对数量，再确认恢复。只有旧设备上的记录？在原浏览器和酒馆地址查找。</p>
+                    <button type="button" class="theater-btn" data-find-legacy>查找本机旧存档</button>`;
                 return;
             }
             view.body.innerHTML=options();
@@ -229,6 +195,7 @@ export function createTheaterBackup(runtime) {
             preview=nextPreview;
             const plan=preview.plan,c=packet.counts;
             view.body.innerHTML=`<p class="theater-dialog-note">${e(packet.deviceName)}${archives?'':` · ${e(new Date(packet.exportedAt).toLocaleString('zh-CN',{hour12:false}))}`}</p>
+              ${legacy && packet.data ? `<p class="theater-dialog-note">书架 ${c.history} 篇 · 长梦 ${c.dreams} 部（${c.chapters} 章） · 指令 ${c.instructions} 条</p>` : ''}
               <table class="theater-backup-counts"><thead><tr><th>恢复内容</th><th>新增</th><th>跳过</th><th>另存</th></tr></thead><tbody>${allowed.map(kind=>{const s=selected.includes(kind)?plan.stats[kind]:null;return `<tr><th scope="row"><label class="theater-backup-pick"><input type="checkbox" value="${kind}" ${selected.includes(kind)?'checked':''}><b>${e(BACKUP_LABELS[kind])}</b></label></th><td>${s?s.added:'—'}</td><td>${s?s.same:'—'}</td><td>${s?s.different:'—'}</td></tr>`;}).join('')}</tbody></table>
               ${selected.includes('dreams')&&c.candidates?`<p class="theater-dialog-note">含 ${c.candidates} 篇待选候选，恢复后仍需选择。</p>`:''}
               ${selected.includes('recent')?'<p class="theater-dialog-note">最近结果恢复为找回副本，保留当前结果。</p>':''}
@@ -243,9 +210,16 @@ export function createTheaterBackup(runtime) {
             const files=[...event.target.files]; if(!files.length)return;
             const current=++ticket;view.error('');const trace=beginTrace('selected',backupFileMetadata(files));
             try {
-                const packets=await Promise.all(files.map(file=>decodeFile(file,scope,stage=>trace.step(stage))));
+                const packets=await Promise.all(files.map(file=>decodeBackupFile(file,scope,runtime.loadJSZip,stage=>trace.step(stage))));
                 if(!view.alive()||current!==ticket)return;
                 packet=packets.length===1?packets[0]:{packets,deviceName:`${packets.length} 份备份`,exportedAt:packets[0].exportedAt,counts:packets.reduce((sum,x)=>{for(const k of Object.keys(x.counts))sum[k]=(sum[k]||0)+x.counts[k];return sum;},{})};
+                if (legacy) {
+                    const d = packet.data;
+                    selected = allowed.filter(kind => ({
+                        history: d.history.length || d.folders.length, dreams: d.dreams.length,
+                        instructions: d.instructions.length || d.instructionTags.length, recent: d.current || d.recent.length || d.recovered.length,
+                    })[kind]);
+                }
                 await review(trace);
             }catch(error){if(view.alive()&&readingTrace===trace)failure(error,trace);}
         });
@@ -254,7 +228,8 @@ export function createTheaterBackup(runtime) {
             const button=event.target.closest('button');if(!button||button.disabled)return;
             if(committing)return;
             try {
-                if(button.hasAttribute('data-archive-retry'))await choose('archives');
+                if(button.hasAttribute('data-find-legacy')){view.close();await openRestore('all','archives');}
+                else if(button.hasAttribute('data-archive-retry'))await choose('archives');
                 else if(button.hasAttribute('data-archive-backup')){view.close();await openRestore('all');}
                 else if(button.hasAttribute('data-archive-review')){
                     const index=Number(view.body.querySelector('[data-archive-choice]:checked')?.value);
@@ -269,7 +244,7 @@ export function createTheaterBackup(runtime) {
                     const trace=beginTrace('remoteDownload');
                     const bytes=await createGithubBackupClient(config).download(entries[Number(button.dataset.remote)]);
                     if(!view.alive()||current!==ticket)return;
-                    packet=await decodeFile(new File([bytes],'backup.zip'),scope,stage=>trace.step(stage));await review(trace);
+                    packet=await decodeBackupFile(new File([bytes],'backup.zip'),scope,runtime.loadJSZip,stage=>trace.step(stage));await review(trace);
                 }else if(button.hasAttribute('data-confirm')){
                     beginTrace('writing');
                     committing=true;view.writing(true);view.element.querySelectorAll('button,input,select').forEach(el=>el.disabled=true);

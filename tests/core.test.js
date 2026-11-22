@@ -3752,13 +3752,13 @@ test('长梦提供逐章目录、完卷恢复和独立备份入口', () => {
     assert.doesNotMatch(source, /注意：本地 \$\{reference\.toLocaleString\(\)\} 字符参考线已超出/);
 });
 
-test('v4.5.2 版本号在代码、清单、样式头和设置页保持一致', () => {
+test('v4.5.3 版本号在代码、清单、样式头和设置页保持一致', () => {
     const source = readTheaterImplementation();
     const styles = readFileSync(new URL('../style.css', import.meta.url), 'utf8');
     const manifest = JSON.parse(readFileSync(new URL('../manifest.json', import.meta.url), 'utf8'));
-    assert.match(source, /const (?:runtime\.)?VERSION = '4\.5\.2'/);
-    assert.equal(manifest.version, '4.5.2');
-    assert.match(styles, /^\/\* 小兔造梦 v4\.5\.2/);
+    assert.match(source, /const (?:runtime\.)?VERSION = '4\.5\.3'/);
+    assert.equal(manifest.version, '4.5.3');
+    assert.match(styles, /^\/\* 小兔造梦 v4\.5\.3/);
     assert.match(source, /当前版本 v\$\{(?:runtime\.)?VERSION\}/);
 });
 

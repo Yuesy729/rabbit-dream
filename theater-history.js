@@ -230,7 +230,7 @@ function renderHistoryList() {
             return '<section class="theater-history-empty"><b>历史存档读取失败</b><p>当前无法确认原数据库中的作品数量，这不代表历史已被删除。请先保留站点数据，稍后重新加载；不要清理站点数据或重装。</p></section>';
         }
         const filtered = runtime.historyQuery.trim() || runtime.historyRoleFilter || runtime.settings.historyTagFilter?.length;
-        return `<section class="theater-history-empty"><b>${filtered ? '没有符合条件的作品' : '暂时没有可显示的小剧场'}</b><p>${filtered ? '角色、标签和搜索会同时生效，可以清空筛选再看看。' : '保存后的作品会出现在这里。如果更新前已有历史，请先核对读取提示、原网址和浏览器；也可以导入已有备份。'}</p>${filtered ? '<button type="button" data-history-reset>清空筛选</button>' : '<button type="button" data-history-import>导入备份…</button>'}</section>`;
+        return `<section class="theater-history-empty"><b>${filtered ? '没有符合条件的作品' : '暂时没有可显示的小剧场'}</b><p>${filtered ? '角色、标签和搜索会同时生效，可以清空筛选再看看。' : '以前用过千夜浮梦？可以从旧备份恢复作品，也可以在原浏览器和酒馆地址查找旧存档。'}</p>${filtered ? '<button type="button" data-history-reset>清空筛选</button>' : '<div class="theater-btn-row"><button type="button" class="theater-btn primary" data-theater-restore="all" data-restore-source="legacy">从千夜浮梦导入备份</button><button type="button" class="theater-btn" data-backup-action="find-archives">查找本机旧存档</button></div>'}</section>`;
     }
     return state.items.map(entry => entry.item ? runtime.historyItemHTML(entry.item) : collectionCardHTML(entry, {
         expanded: runtime.histBatchMode || !!runtime.historyQuery.trim() || runtime.historyExpanded.has(entry.folder.id),

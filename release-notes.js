@@ -1,5 +1,9 @@
 // Published releases. Fold preview iterations into the next published entry.
 export const RELEASE_NOTES = Object.freeze([
+    { version: '4.5.3', date: '2026.11.22', changes: [
+        ['调整', '雾薄荷与淡柠檬', '降低内置主题的饱和度，保留深色文字与标题分隔线。'],
+        ['新增', '从千夜浮梦导入备份', '空书架和设置可直接打开旧版导入，预览书架、长梦、指令和生成结果后再恢复。支持读取酒馆设置备份中保留的旧作品。'],
+    ] },
     { version: '4.5.2', date: '2026.11.21', changes: [
         ['调整', '内置主题配色', '写梦和保存弹窗改用浅薄荷绿，选中的页签用淡柠檬绿标记。'],
     ] },
